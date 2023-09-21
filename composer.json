@@ -1,0 +1,24 @@
+{
+    "name": "swissup/module-webp",    
+    "description": "Magento2 module for convert images to webp format",
+    "keywords": [
+        "image",
+        "optimization",
+        "webp"
+    ],
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "OSL-3.0",
+    "require": {
+        "swissup/module-core": "^1.12.13",
+        "magento/framework": ">=102.0",
+        "magento/module-catalog": ">=103.0",
+        "rosell-dk/webp-convert": "^2.9"
+    },
+    "autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+            "Swissup\\Webp\\": ""
+        }
+    }
+}
