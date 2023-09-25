@@ -16,12 +16,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConvertCommand extends \Symfony\Component\Console\Command\Command
 {
     const SKIP_HIDDEN_IMAGES = 'skip_hidden_images';
-    
+
     /**
      * @var \Swissup\Webp\Service\ImageConvert
      */
     private $imageConvert;
-    
+
     /**
      * @var State
      */
@@ -31,7 +31,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
      * @var ProgressBarFactory
      */
     private $progressBarFactory;
-    
+
     /**
      * @param State $appState
      * @param \Swissup\Webp\Service\ImageConvert $imageConvert
@@ -60,7 +60,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
             ->setDefinition($this->getOptionsList());
         ;
     }
-    
+
     /**
      * Image resize command options list
      *
@@ -73,8 +73,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
                 self::SKIP_HIDDEN_IMAGES,
                 null,
                 InputOption::VALUE_NONE,
-                'Do not process images marked as hidden from product page',
-                false
+                'Do not process images marked as hidden from product page'
             ),
         ];
     }
@@ -85,7 +84,6 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $skipHiddenImages = (bool) $input->getOption(self::SKIP_HIDDEN_IMAGES);
-        
         try {
             $errors = [];
             $this->appState->setAreaCode(Area::AREA_GLOBAL);
@@ -129,15 +127,14 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
 
         $output->write(PHP_EOL);
         if (count($errors)) {
-            $output->writeln("<info>Product images resized with errors:</info>");
+            $output->writeln("<info>Product images converted with errors:</info>");
             foreach ($errors as $error) {
                 $output->writeln("<error>{$error}</error>");
             }
         } else {
-            $output->writeln("<info>Product images resized successfully</info>");
+            $output->writeln("<info>Product images converted successfully</info>");
         }
-        
-        
+
         return Cli::RETURN_SUCCESS;
     }
 }

@@ -20,6 +20,11 @@ use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfig;
 class ImageConvert
 {
     /**
+     * @var MediaConfig
+     */
+    private $mediaConfig;
+
+    /**
      * @var ProductImage
      */
     private $productImage;
@@ -43,7 +48,7 @@ class ImageConvert
      * @var FileStorageDatabase
      */
     private $fileStorageDatabase;
-            
+
     /**
      * @var bool
      */
@@ -82,11 +87,11 @@ class ImageConvert
             throw new NotFoundException(__('Cannot resize images - product images not found'));
         }
 
-        $productImages = $this->getProductImages($skipHiddenImages);
+        $productImages = $this->getProductImages();
 
         foreach ($productImages as $image) {
             var_dump($image);
-            
+
             $error = '';
             $originalImageName = $image['filepath'];
 
@@ -109,8 +114,8 @@ class ImageConvert
             yield ['filename' => $originalImageName, 'error' => (string) $error] => $count;
         }
     }
-    
-    public function setSkipHiddenImages(bool $status = true) 
+
+    public function setSkipHiddenImages(bool $status = true)
     {
         $this->skipHiddenImages = $status;
         return $this;
@@ -128,9 +133,9 @@ class ImageConvert
     /**
      * @return Generator
      */
-    private function getProductImages(bool $skipHiddenImages = false): \Generator
+    private function getProductImages(): \Generator
     {
-        return $this->skipHiddenImages ? 
+        return $this->skipHiddenImages ?
             $this->productImage->getUsedProductImages() : $this->productImage->getAllProductImages();
     }
 
@@ -148,6 +153,5 @@ class ImageConvert
             $originalImagePath,
             $originalImageName
         ]);
-        die;
     }
 }
