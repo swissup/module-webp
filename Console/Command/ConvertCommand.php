@@ -18,7 +18,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     const SKIP_HIDDEN_IMAGES = 'skip_hidden_images';
 
     /**
-     * @var \Swissup\Webp\Service\ImageConvert
+     * @var \Swissup\Webp\Model\ImageConvert
      */
     private $imageConvert;
 
@@ -34,13 +34,13 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
 
     /**
      * @param State $appState
-     * @param \Swissup\Webp\Service\ImageConvert $imageConvert
+     * @param \Swissup\Webp\Model\ImageConvert $imageConvert
      * @param ProgressBarFactory $progressBarFactory
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct(
         State $appState,
-        \Swissup\Webp\Service\ImageConvert $imageConvert,
+        \Swissup\Webp\Model\ImageConvert $imageConvert,
         ProgressBarFactory $progressBarFactory
     ) {
         parent::__construct();

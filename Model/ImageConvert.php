@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Swissup\Webp\Service;
+namespace Swissup\Webp\Model;
 
 use Generator;
 use Magento\Framework\Filesystem;
