@@ -8,14 +8,16 @@ use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\ProgressBarFactory;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class ConvertCommand extends \Symfony\Component\Console\Command\Command
 {
     const SKIP_HIDDEN_IMAGES = 'skip_hidden_images';
+
+    const DEFAULT_LIMIT = 100000;
 
     /**
      * @var \Swissup\Webp\Model\ImageConvert
@@ -75,6 +77,19 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
                 InputOption::VALUE_NONE,
                 'Do not process images marked as hidden from product page'
             ),
+            new InputOption(
+                'limit',
+                'l',
+                InputArgument::OPTIONAL,
+                'limit --limit=10 (default: 100 000)',
+                self::DEFAULT_LIMIT
+            ),
+            new InputOption(
+                'filename',
+                'f',
+                InputArgument::OPTIONAL,
+                'filename filter --filename=1.png'
+            )
         ];
     }
 
@@ -83,12 +98,18 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $skipHiddenImages = (bool) $input->getOption(self::SKIP_HIDDEN_IMAGES);
+        $skipHiddenImages = (bool) $input->getOption(self::SKIP_HIbDDEN_IMAGES);
+        $limit = (int) $input->getOption('limit');
+        $filename = (string) $input->getOption('filename');
+        if (!empty($filename)) {
+            $this->imageConvert->setFilenameFilter($filename);
+        }
         try {
             $errors = [];
             $this->appState->setAreaCode(Area::AREA_GLOBAL);
             $generator = $this->imageConvert
                 ->setSkipHiddenImages($skipHiddenImages)
+                ->setLimit($limit)
                 ->execute();
 
             /** @var ProgressBar $progress */
