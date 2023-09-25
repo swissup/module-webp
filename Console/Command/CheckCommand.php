@@ -37,7 +37,7 @@ class CheckCommand extends \Symfony\Component\Console\Command\Command
     protected function configure()
     {
         $this->setName('swissup:webp:check')
-            ->setDescription('Configure options.')
+            ->setDescription('Check available webp convertors.')
             ->setAliases(['webp:check', 'webp:convert:check'])
         ;
         $this->addOption(
