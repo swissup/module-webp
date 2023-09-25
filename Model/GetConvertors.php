@@ -27,6 +27,7 @@ class GetConvertors
 
     private function checkConvertorStatuses()
     {
+        /* @phpstan-ignore-next-line */
         $converters = WebPConvertors::getAvailableConverters();
         $finder = new ExecutableFinder();
         $dataset = [];
