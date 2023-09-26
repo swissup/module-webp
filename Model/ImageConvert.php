@@ -115,6 +115,10 @@ class ImageConvert
                 continue;
             }
 
+            if ($this->filenameFilter !== null && !str_contains($originalImageName, $this->filenameFilter)) {
+                continue;
+            }
+
             $mediastoragefilename = $this->mediaConfig->getMediaPath($originalImageName);
             $originalImagePath = $this->mediaDirectory->getAbsolutePath($mediastoragefilename);
 

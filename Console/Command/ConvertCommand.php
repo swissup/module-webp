@@ -98,7 +98,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $skipHiddenImages = (bool) $input->getOption(self::SKIP_HIbDDEN_IMAGES);
+        $skipHiddenImages = (bool) $input->getOption(self::SKIP_HIDDEN_IMAGES);
         $limit = (int) $input->getOption('limit');
         $filename = (string) $input->getOption('filename');
         if (!empty($filename)) {
