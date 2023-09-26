@@ -42,6 +42,11 @@ class ImageConvert
     private $fileStorageDatabase;
 
     /**
+     * @var ProductImageAttributeUpdater
+     */
+    private $productImageAttributeUpdater;
+
+    /**
      * @var ProductGalleryTableUpdater
      */
     private $galleryUpdater;
@@ -76,6 +81,7 @@ class ImageConvert
         ProductImage $productImage,
         Filesystem $filesystem,
         FileStorageDatabase $fileStorageDatabase,
+        \Swissup\Webp\Model\ProductImageAttributeUpdater $productImageAttributeUpdater,
         \Swissup\Webp\Model\ProductGalleryTableUpdater $galleryUpdater
 
     ) {
@@ -83,6 +89,7 @@ class ImageConvert
         $this->productImage = $productImage;
         $this->mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $this->fileStorageDatabase = $fileStorageDatabase;
+        $this->productImageAttributeUpdater = $productImageAttributeUpdater;
         $this->galleryUpdater = $galleryUpdater;
     }
 
@@ -130,12 +137,14 @@ class ImageConvert
                     $webpImagePath = preg_replace($regexReplacePattern, '.webp', $originalImagePath);
                     if (!$this->mediaDirectory->isExist($webpImagePath)) {
                         $this->convert($originalImagePath, $webpImagePath);
+                        if ($this->mediaDirectory->isExist($webpImagePath)) {
+                            $webpImageName = preg_replace($regexReplacePattern, '.webp', $originalImageName);
+                            $this->productImageAttributeUpdater->update($originalImageName, $webpImageName);
+                            $this->galleryUpdater->update($originalImageName, $webpImageName);
+                        }
                         $i++;
                     }
-                    if ($this->mediaDirectory->isExist($webpImagePath)) {
-                        $webpImageName = preg_replace($regexReplacePattern, '.webp', $originalImageName);
-                        $this->galleryUpdater->update($originalImageName, $webpImageName);
-                    }
+
                 } catch (\Exception $e) {
                     $error = $e->getMessage();
                 }
