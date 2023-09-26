@@ -66,6 +66,12 @@ In addition to converting, the library also has a method for *serving* converted
 #### Convert product images to [webp](https://developers.google.com/speed/webp)
 
 ```bash
+bin/magento swissup:webp:convert
+```
+
+###### Help by this command
+
+```bash
 bin/magento swissup:webp:convert -h 
 Description:
   Convert product images to webp
@@ -84,5 +90,4 @@ Options:
       --ansi|--no-ansi      Force (or disable --no-ansi) ANSI output
   -n, --no-interaction      Do not ask any interactive question
   -v|vv|vvv, --verbose      Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
-
 ```
