@@ -19,15 +19,22 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
 
     const DEFAULT_LIMIT = 100000;
 
+    const CONFIG_XML_PATH_CATALOG_MEDIA_URL_FORMAT = 'web/url/catalog_media_url_format';
+
+    /**
+     * @var State
+     */
+    private $appState;
+
     /**
      * @var \Swissup\Webp\Model\ImageConvert
      */
     private $imageConvert;
 
     /**
-     * @var State
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    private $appState;
+    private $scopeConfig;
 
     /**
      * @var ProgressBarFactory
@@ -43,11 +50,13 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     public function __construct(
         State $appState,
         \Swissup\Webp\Model\ImageConvert $imageConvert,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         ProgressBarFactory $progressBarFactory
     ) {
         parent::__construct();
         $this->appState = $appState;
         $this->imageConvert = $imageConvert;
+        $this->scopeConfig = $scopeConfig;
         $this->progressBarFactory = $progressBarFactory;
     }
 
@@ -98,6 +107,15 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($this->isImageOptimizationBasedOnQueryParams()) {
+            $message = 'Your Magento is not configured to use "Image optimization based on query parameters".'
+                . ' So running this command no more sense.'
+                . "\n" . 'Read more "Catalog media URL format" '
+                . '- https://experienceleague.adobe.com/docs/commerce-admin/config/general/web.html';
+            $output->writeln("<error><fg=red;options=bold>Error: {$message}</></error>");
+            return \Magento\Framework\Console\Cli::RETURN_FAILURE;
+        }
+
         $skipHiddenImages = (bool) $input->getOption(self::SKIP_HIDDEN_IMAGES);
         $limit = (int) $input->getOption('limit');
         $filename = (string) $input->getOption('filename');
@@ -157,5 +175,19 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
         }
 
         return Cli::RETURN_SUCCESS;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    private function isImageOptimizationBasedOnQueryParams()
+    {
+        $catalogMediaUrlFormat = $this->scopeConfig->getValue(
+            self::CONFIG_XML_PATH_CATALOG_MEDIA_URL_FORMAT
+//            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        return $catalogMediaUrlFormat === \Magento\Catalog\Model\Config\CatalogMediaConfig::IMAGE_OPTIMIZATION_PARAMETERS;
     }
 }
