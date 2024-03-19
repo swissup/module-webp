@@ -11,6 +11,7 @@ use Magento\Catalog\Model\ResourceModel\Product\Image as ProductImage;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\MediaStorage\Helper\File\Storage\Database as FileStorageDatabase;
 use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfig;
+use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Filesystem\Io\File as IoFile;
 use WebPConvert\Convert\Exceptions\ConversionFailedException;
 use WebPConvert\WebPConvert;

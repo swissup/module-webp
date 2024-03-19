@@ -11,7 +11,7 @@ class ProductImageAttributeUpdater
     private $resourceConnection;
 
     /**
-     * @var arrays
+     * @var array
      */
     private $attributeIds;
 
