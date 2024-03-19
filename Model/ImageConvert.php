@@ -11,6 +11,7 @@ use Magento\Catalog\Model\ResourceModel\Product\Image as ProductImage;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\MediaStorage\Helper\File\Storage\Database as FileStorageDatabase;
 use Magento\Catalog\Model\Product\Media\ConfigInterface as MediaConfig;
+use Magento\Framework\Filesystem\Io\File as IoFile;
 use WebPConvert\Convert\Exceptions\ConversionFailedException;
 use WebPConvert\WebPConvert;
 
@@ -52,6 +53,11 @@ class ImageConvert
     private $galleryUpdater;
 
     /**
+     * @var IoFile
+     */
+    private $ioFile;
+
+    /**
      * @var bool
      */
     private $skipHiddenImages = false;
@@ -68,10 +74,13 @@ class ImageConvert
     private $limit = 100;
 
     /**
-     * @param MediaConfig $mediaConfig,
+     * @param MediaConfig $mediaConfig
      * @param ProductImage $productImage
      * @param Filesystem $filesystem
      * @param FileStorageDatabase $fileStorageDatabase
+     * @param \Swissup\Webp\Model\ProductImageAttributeUpdater $productImageAttributeUpdater
+     * @param \Swissup\Webp\Model\ProductGalleryTableUpdater $galleryUpdater
+     * @param IoFile $ioFile
      * @throws \Magento\Framework\Exception\FileSystemException
      * @internal param ProductImage $gallery
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -82,8 +91,8 @@ class ImageConvert
         Filesystem $filesystem,
         FileStorageDatabase $fileStorageDatabase,
         \Swissup\Webp\Model\ProductImageAttributeUpdater $productImageAttributeUpdater,
-        \Swissup\Webp\Model\ProductGalleryTableUpdater $galleryUpdater
-
+        \Swissup\Webp\Model\ProductGalleryTableUpdater $galleryUpdater,
+        IoFile $ioFile
     ) {
         $this->mediaConfig = $mediaConfig;
         $this->productImage = $productImage;
@@ -91,9 +100,11 @@ class ImageConvert
         $this->fileStorageDatabase = $fileStorageDatabase;
         $this->productImageAttributeUpdater = $productImageAttributeUpdater;
         $this->galleryUpdater = $galleryUpdater;
+        $this->ioFile = $ioFile;
     }
 
     /**
+     * Execute
      *
      * @return Generator
      * @throws NotFoundException
@@ -117,7 +128,8 @@ class ImageConvert
             $error = '';
             $originalImageName = $image['filepath'];
 
-            $extension = pathinfo($originalImageName, PATHINFO_EXTENSION);
+            $imagePathInfo = $this->ioFile->getPathInfo($originalImageName);
+            $extension = $imagePathInfo['extension'] ?? false;
             if (!in_array($extension, $convertFileExtensions)) {
                 continue;
             }
@@ -157,6 +169,8 @@ class ImageConvert
     }
 
     /**
+     * Set skipHiddenImages property
+     *
      * @param bool $status
      * @return $this
      */
@@ -167,6 +181,8 @@ class ImageConvert
     }
 
     /**
+     * Set limit
+     *
      * @param int $limit
      * @return $this
      */
@@ -177,6 +193,7 @@ class ImageConvert
     }
 
     /**
+     * Set filename filter
      *
      * @param string $filename
      */
@@ -187,6 +204,8 @@ class ImageConvert
     }
 
     /**
+     * Get size
+     *
      * @return int
      */
     private function getSize(): int
@@ -198,6 +217,8 @@ class ImageConvert
     }
 
     /**
+     * Get product images
+     *
      * @return Generator
      */
     private function getProductImages(): \Generator
@@ -220,6 +241,8 @@ class ImageConvert
     }
 
     /**
+     * Get convertors options
+     *
      * @return array
      */
     private function getWebpConvertorOptions(): array

@@ -8,6 +8,9 @@ class ProductGalleryTableUpdater
      */
     private $galleryResource;
 
+    /**
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Gallery $galleryResource
+     */
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\Gallery $galleryResource
     ) {
@@ -15,6 +18,8 @@ class ProductGalleryTableUpdater
     }
 
     /**
+     * Update media type
+     *
      * @param string $oldValue
      * @param string $newValue
      * @return int

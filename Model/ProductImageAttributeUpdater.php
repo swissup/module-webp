@@ -15,12 +15,17 @@ class ProductImageAttributeUpdater
      */
     private $attributeIds;
 
+    /**
+     * @param ResourceConnection $resourceConnection
+     */
     public function __construct(ResourceConnection $resourceConnection)
     {
         $this->resourceConnection = $resourceConnection;
     }
 
     /**
+     * Update
+     *
      * @param string $oldValue
      * @param string $newValue
      * @return int
@@ -40,6 +45,8 @@ class ProductImageAttributeUpdater
     }
 
     /**
+     * Get attribute ids
+     *
      * @return array
      */
     private function getAttributeIds()

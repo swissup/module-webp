@@ -12,11 +12,22 @@ class GetConvertors
      */
     private $convertors;
 
+    /**
+     * Execute
+     *
+     * @return array|null
+     */
     public function execute()
     {
         return $this->getConvertors();
     }
 
+    /**
+     * Get convertors
+     *
+     * @param bool $force
+     * @return array|null
+     */
     private function getConvertors($force = false)
     {
         if ($this->convertors === null || $force) {
@@ -25,6 +36,11 @@ class GetConvertors
         return $this->convertors;
     }
 
+    /**
+     * Check convertors
+     *
+     * @return array
+     */
     private function checkConvertorStatuses()
     {
         /* @phpstan-ignore-next-line */

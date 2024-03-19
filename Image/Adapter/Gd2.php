@@ -4,6 +4,8 @@ namespace Swissup\Webp\Image\Adapter;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Phrase;
 
+// @codingStandardsIgnoreStart
+//phpcs:disable
 class Gd2 extends \Magento\Framework\Image\Adapter\AbstractAdapter
 {
 
@@ -1004,3 +1006,5 @@ class Gd2 extends \Magento\Framework\Image\Adapter\AbstractAdapter
         return $newImage;
     }
 }
+//phpcs:enable
+// @codingStandardsIgnoreEnd

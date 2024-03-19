@@ -6,6 +6,7 @@ namespace Swissup\Webp\Console\Command;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
+use Magento\Catalog\Model\Config\CatalogMediaConfig;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\ProgressBarFactory;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,6 +45,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     /**
      * @param State $appState
      * @param \Swissup\Webp\Model\ImageConvert $imageConvert
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param ProgressBarFactory $progressBarFactory
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -61,7 +63,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -103,7 +105,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -178,6 +180,7 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     }
 
     /**
+     * Check is web server image optimisation was enabled
      *
      * @return boolean
      */
@@ -185,9 +188,9 @@ class ConvertCommand extends \Symfony\Component\Console\Command\Command
     {
         $catalogMediaUrlFormat = $this->scopeConfig->getValue(
             self::CONFIG_XML_PATH_CATALOG_MEDIA_URL_FORMAT
-//            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            //\Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 
-        return $catalogMediaUrlFormat === \Magento\Catalog\Model\Config\CatalogMediaConfig::IMAGE_OPTIMIZATION_PARAMETERS;
+        return $catalogMediaUrlFormat === CatalogMediaConfig::IMAGE_OPTIMIZATION_PARAMETERS;
     }
 }
