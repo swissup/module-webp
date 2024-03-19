@@ -15,6 +15,9 @@
         "magento/module-catalog": ">=103.0",
         "rosell-dk/webp-convert": "^2.9"
     },
+    "suggest": {
+        "magestyapps/module-web-images": "This extension for Magento 2 allows uploading SVG and WebP images (composer require magestyapps/module-web-images)"
+    },
     "autoload": {
         "files": [ "registration.php" ],
         "psr-4": {
